@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Tanks/Tank.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Tanks/EnemyTank.gd" type="Script" id=2]
+[ext_resource path="res://PNG/Retina/tankBody_red_outline.png" type="Texture" id=3]
+[ext_resource path="res://PNG/Retina/tankRed_barrel2_outline.png" type="Texture" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 260.9
+
+[node name="EnemyTank" instance=ExtResource( 1 )]
+
+script = ExtResource( 2 )
+Speed = 150
+rotaion_speed = 10.0
+gun_cooldown = 1.0
+health = 100
+turret_speed = 20.0
+detect_radius = 200
+
+[node name="Body" parent="." index="0"]
+
+rotation = -1.5756
+texture = ExtResource( 3 )
+
+[node name="turret" parent="." index="2"]
+
+rotation = -1.56145
+texture = ExtResource( 4 )
+offset = Vector2( 0, 15 )
+_sections_unfolded = [ "Offset" ]
+
+[node name="Muzzle" parent="turret" index="0"]
+
+position = Vector2( 0, 50 )
+_sections_unfolded = [ "Transform", "Z Index" ]
+
+[node name="DetectRaduis" type="Area2D" parent="." index="4"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Audio Bus", "Collision" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectRaduis" index="0"]
+
+shape = SubResource( 1 )
+
+[connection signal="body_entered" from="DetectRaduis" to="." method="_on_DetectRaduis_body_entered"]
+
+[connection signal="body_exited" from="DetectRaduis" to="." method="_on_DetectRaduis_body_exited"]
+
+
